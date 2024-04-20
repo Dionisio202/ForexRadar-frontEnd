@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import Frecuency from './frecuency';
 
 interface DataPoint {
   x: Date;
@@ -10,7 +11,7 @@ interface ForexApiResponse {
   'Meta Data': {
     '2. Symbol': string;
   };
-  'Time Series (Daily)': {
+  'Time Series': {
     [date: string]: {
       '1. open': string;
       '2. high': string;
@@ -23,6 +24,9 @@ interface ForexApiResponse {
 
 interface Props {
   currencyPair: string; // Propiedad para especificar el par de divisas (por ejemplo, "EURUSD", "GBPUSD", etc.)
+  frecuency: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 interface State {
@@ -68,12 +72,12 @@ class ApexChart extends React.Component<Props, State> {
 
   componentDidMount() {
     // Obtener datos para el par de divisas especificado en la prop currencyPair
-    this.fetchForexData(this.props.currencyPair);
+    this.fetchForexData(this.props.currencyPair ,this.props.frecuency ,this.props.startDate, this.props.endDate);
   }
 
-  fetchForexData(currencyPair: string) {
+  fetchForexData(currencyPair: string ,frecuency: string , startDate?: string, endDate?: string) {
     // Realizar la solicitud HTTP a la API con el parámetro de divisas
-    fetch(`http://127.0.0.1:8000/divisa/dataForex/?divisas=${currencyPair}`)
+    fetch(`http://127.0.0.1:8000/divisa/dataprueba/?divisas=${currencyPair}&frequency=${frecuency}&start_date=${startDate}&end_date=${endDate}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch forex data');
@@ -85,7 +89,7 @@ class ApexChart extends React.Component<Props, State> {
         const symbol = data['Meta Data']['2. Symbol'];
 
         // Procesar los datos de la API y actualizar el estado
-        const forexData = Object.entries(data['Time Series (Daily)']).map(([date, values]) => ({
+        const forexData = Object.entries(data['Time Series']).map(([date, values]) => ({
           x: new Date(date),
           y: [
             parseFloat(values['1. open']),

@@ -1,19 +1,34 @@
 import React from 'react';
+import { insertDivisaUser } from './methods';
+interface DivisaDataProps {
+  divisaName: string;
+  img1:string;
+  img2:string;
+  id: number;
+}
 
-const divisaData = () => {
+const divisaData: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) => {
+  
+  const handleClick = () => {
+    //const user=localStorage.getItem('userId');
+    const user = localStorage.getItem('userId') ?? '';
+    //console.log(`ID seleccionado: ${id} y el usuario es ${user}`);
+    insertDivisaUser(id,user);
+  };
+
   return (
 <div>
     <div className="flex m-2 items-center w-full justify-center">
     <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-black overflow-hidden">
-        <img src="ruta-a-tu-imagen-1" alt="Bandera 1" className="w-full h-full object-cover" />
+        <img src={img1} alt="Bandera 1" className="w-full h-full object-cover" />
     </div>
     <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-black overflow-hidden">
-        <img src="ruta-a-tu-imagen-2" alt="Bandera 2" className="w-full h-full object-cover" />
+        <img src={img2} alt="Bandera 2" className="w-full h-full object-cover" />
     </div>
     <div className="flex justify-center items-center ml-5">
-    <h1 className="text-lg">EUR/USD</h1>
+    <h1 className="text-lg">{divisaName}</h1>
     </div>  
-    <button className='ml-60'>
+    <button className='ml-60' onClick={handleClick}>
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 28 28"

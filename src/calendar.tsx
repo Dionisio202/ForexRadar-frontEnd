@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import { useGlobalContext } from './globalProvider';
 const CustomDropdown = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
+  const { setGlobalDates } = useGlobalContext();
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -15,14 +15,19 @@ const CustomDropdown = () => {
     if (startDate && endDate) {
       console.log('Fecha de inicio:', startDate);
       console.log('Fecha de fin:', endDate);
-      const startDateFormatted = formatDate(startDate);
-      const endDateFormatted = formatDate(endDate);
-      const dateRangeText = `${startDateFormatted} - ${endDateFormatted}`;
-      console.log('Rango de fechas:', dateRangeText);
+      const formattedStartDate = formatDateSend(startDate);
+      const formattedEndDate = formatDateSend(endDate);
+      setGlobalDates(formattedStartDate, formattedEndDate);
     }
     setShowMenu(false);
   };
-
+  const formatDateSend = (date:Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Sumar 1 al mes ya que los meses van de 0 a 11
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
   const formatDate = (date: Date): string => {
     const options: Intl.DateTimeFormatOptions = {
       day: '2-digit',

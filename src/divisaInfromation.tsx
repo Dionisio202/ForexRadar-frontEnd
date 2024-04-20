@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import AddDivisa from './add-Divisa.tsx';
 import ApexChart from './ForexChart.tsx';
@@ -7,10 +7,31 @@ import Frecuency from './frecuency.tsx';
 import CurrentData from './currentData.tsx';
 import userIcon from '../src/assets/userI.svg';
 import Sidebar from 'react-sidebar';
+import DeleteDivisa from './delete-Divisa.tsx';
+import { Divisa, fetchDivisasDelete } from './methods.tsx';
+import { useGlobalContext } from './globalProvider';
+
 
 const DivisaInformation = () => {
   const [showContainer, setShowContainer] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [divisas, setDivisas] = useState<Divisa[]>([]);
+  const {globalStartDate} = useGlobalContext();
+  const {globalEndDate} = useGlobalContext();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Obtener las divisas utilizando la función fetchDivisas
+        const data = await fetchDivisasDelete();
+        setDivisas(data); // Almacenar las divisas en el estado local
+  
+      } catch (error) {
+        console.error('Error al obtener divisas:', error);
+      }
+    };
+
+    fetchData(); // Llamar a la función para obtener datos al montar el componente
+  }, []); // El segundo argumento [] asegura que useEffect solo se ejecute una vez al montar el componente
 
   const toggleContainer = () => {
     setShowContainer(!showContainer);
@@ -18,11 +39,10 @@ const DivisaInformation = () => {
 
   const openModal = () => {
     setModalIsOpen(true);
+  
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
+ 
 
   return (
     <div className="flex flex-col w-full h-full bg-fondo">
@@ -37,13 +57,32 @@ const DivisaInformation = () => {
       <div className="flex flex-grow w-full">
         {/* Gráfico que ocupa el 70% del ancho */}
         <div className="w-full h-full bg-white relative">
-          <ApexChart currencyPair="EURUSD" />
+          <ApexChart currencyPair="EURUSD" frecuency='D'  startDate={globalStartDate||"2020-05-01"} endDate={globalEndDate||"2024-01-01"}/>
 
           {/* Contenedor desplegable */}
           <Sidebar
             sidebar={
               <div className="bg-white h-full w-56 flex flex-col items-center mt-2">
                 <AddDivisa />
+              
+                <div className="flex flex-col">
+      {/* Verificar si hay datos en el array divisas */}
+      {divisas.length > 0 ? (
+        // Renderizar dinámicamente DivisaData para cada divisa en el array divisas
+        divisas.map((divisa) => (
+          <DeleteDivisa
+            key={divisa.id}  // Asegúrate de proporcionar una key única para cada elemento en el array
+            id={divisa.id} 
+            divisaName={divisa.nombre}
+            img1={divisa.imagen1} 
+            img2={divisa.imagen2}
+          />
+        ))
+      ) : (
+        // Mostrar mensaje cuando no hay datos en el array divisas
+        <p className='flex justify-center items-center'>No tienes datos de divisas.</p>
+      )}
+    </div>
               </div>
             }
             open={showContainer}
