@@ -1,5 +1,6 @@
 import React from 'react';
 import { insertDivisaUser } from './methods';
+import { useGlobalContext } from './globalProvider';
 interface DivisaDataProps {
   divisaName: string;
   img1:string;
@@ -8,12 +9,16 @@ interface DivisaDataProps {
 }
 
 const divisaData: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) => {
-  
+  const {setDivisas} = useGlobalContext();
+  const {setIsSpinner} = useGlobalContext();
   const handleClick = () => {
+   
     //const user=localStorage.getItem('userId');
     const user = localStorage.getItem('userId') ?? '';
     //console.log(`ID seleccionado: ${id} y el usuario es ${user}`);
-    insertDivisaUser(id,user);
+
+    insertDivisaUser(id,user,setDivisas,setIsSpinner);
+
   };
 
   return (
@@ -25,10 +30,11 @@ const divisaData: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) => {
     <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-black overflow-hidden">
         <img src={img2} alt="Bandera 2" className="w-full h-full object-cover" />
     </div>
-    <div className="flex justify-center items-center ml-5">
+    <div className="flex justify-center items-center ml-5  w-20 ">
     <h1 className="text-lg">{divisaName}</h1>
     </div>  
-    <button className='ml-60' onClick={handleClick}>
+    
+    <button className='ml-40 hover:scale-110 transition-transform duration-300 hover:text-green-800' onClick={handleClick}>
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 28 28"

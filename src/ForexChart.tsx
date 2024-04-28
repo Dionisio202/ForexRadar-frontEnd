@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import Frecuency from './frecuency';
+
 
 interface DataPoint {
   x: Date;
@@ -73,6 +73,32 @@ class ApexChart extends React.Component<Props, State> {
   componentDidMount() {
     // Obtener datos para el par de divisas especificado en la prop currencyPair
     this.fetchForexData(this.props.currencyPair ,this.props.frecuency ,this.props.startDate, this.props.endDate);
+  }
+  componentDidUpdate(prevProps: Props) {
+    const {
+      currencyPair: newCurrencyPair,
+      frecuency: newFrecuency,
+      startDate: newStartDate,
+      endDate: newEndDate,
+    } = this.props;
+
+    const {
+      currencyPair: oldCurrencyPair,
+      frecuency: oldFrecuency,
+      startDate: oldStartDate,
+      endDate: oldEndDate,
+    } = prevProps;
+
+    // Verificar si hay cambios relevantes en las propiedades
+    if (
+      newFrecuency  !==oldFrecuency || // Frecuencia cambió de false a true
+      newCurrencyPair !== oldCurrencyPair || // Par de divisas cambió
+      newStartDate !== oldStartDate || // Fecha de inicio cambió
+      newEndDate !== oldEndDate // Fecha de fin cambió
+    ) {
+      // Llamar a fetchForexData con las nuevas propiedades
+      this.fetchForexData(newCurrencyPair, newFrecuency, newStartDate, newEndDate);
+    }
   }
 
   fetchForexData(currencyPair: string ,frecuency: string , startDate?: string, endDate?: string) {

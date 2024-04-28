@@ -11,27 +11,65 @@ const RegisterForm: React.FunctionComponent = () => {
   const [error, setError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const { toggleLogin } = useGlobalContext(); 
+  const { isLogin} = useGlobalContext();
+  const containsNumber = (value:any) => {
+    return /\d/.test(value); // Devuelve true si el valor contiene algún número
+  };
+
+  const validateEmail = (email:any) => {
+    // Expresión regular para validar el formato de email
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleNameChange = (e:any) => {
+    const value = e.target.value;
+    if (!containsNumber(value)) {
+      setName(value);
+    }
+    console.log(isLogin);
+  };
+
+  const handleLastNameChange = (e:any) => {
+    const value = e.target.value;
+    if (!containsNumber(value)) {
+      setLastName(value);
+    }
+  };
+
   const handleRegister = async () => {
+    // Validar la contraseña
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
+    // Validar el correo electrónico
+    if (!validateEmail(email)) {
+      setError('Ingrese un correo electrónico válido.');
+      return;
+    }
+
+    // Realizar el registro si todas las validaciones pasan
     setIsFormValid(true);
-     register(email,password,setError,name,lastName,confirmPassword,setIsFormValid,toggleLogin );
- 
+    register(email, password, setError, name, lastName, confirmPassword, setIsFormValid, toggleLogin);
   };
 
   return (
-    <div >
+    <div>
       <h2 className="text-xl font-semibold mb-4 text-white text-center">Registro</h2>
       <input
         type="text"
         placeholder="Nombre"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={handleNameChange}
         className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
       />
       <input
         type="text"
         placeholder="Apellido"
         value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
+        onChange={handleLastNameChange}
         className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
       /> 
       <input
@@ -54,8 +92,7 @@ const RegisterForm: React.FunctionComponent = () => {
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-     
-     />
+      />
       <button
         onClick={handleRegister}
         disabled={isFormValid}

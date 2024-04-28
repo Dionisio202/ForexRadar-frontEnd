@@ -5,3 +5,26 @@
 .bg-fondo{
     background-color: #26292D;
   }
+
+/* En tu archivo de estilos */
+.loader {
+  border-top-color: #182025;
+  border-radius: 50%;
+  border-width: 4px;
+  border-style: solid;
+  border-bottom-color: transparent;
+  height: 50px;
+  width: 50px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

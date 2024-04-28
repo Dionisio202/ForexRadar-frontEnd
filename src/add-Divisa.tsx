@@ -32,7 +32,7 @@ const AddDivisa = () => {
   return (
     <div className="flex items-center justify-center text-center">
       <h1 className="mr-1 text-lg ml-5">Lista de seguimiento</h1>
-      <button onClick={openModal}>
+      <button onClick={openModal} className='hover:text-black hover:scale-110 transition-transform duration-300'>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 28 28"

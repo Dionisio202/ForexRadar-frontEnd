@@ -1,5 +1,6 @@
 import React from 'react';
-import { DeleteDivisa } from './methods';
+import { DeleteDivisa, fetchDivisasDelete } from './methods';
+import { useGlobalContext } from './globalProvider';
 
 interface DivisaDataProps {
   divisaName: string;
@@ -9,17 +10,25 @@ interface DivisaDataProps {
 }
 
 const deleteDivisa: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) => {
-  
-  const handleClick = () => {
+  const {setGlobaldivisaName } = useGlobalContext();
+  const {setDivisas} = useGlobalContext();
+  const {setIsSpinner} = useGlobalContext();
+  const handleClick = async () => {
     const user = localStorage.getItem('userId') ?? '';
-    console.log(`ID seleccionado para eliminar : ${id} y el usuario es ${user}`);
     const ID = id.toString();
-    DeleteDivisa(user,ID);
+    DeleteDivisa(user,ID,setDivisas,setGlobaldivisaName,setIsSpinner);
+      
   };
-
+const handleDivisanameClik = () => {
+  let divisaData=divisaName.replace('/', '');
+  setGlobaldivisaName(divisaData);
+  
+}
   return (
 <div>
+
     <div className="flex m-2 items-center w-full justify-center">
+    <button onClick={handleDivisanameClik} className='flex hover:scale-110 transition-transform duration-300'>
     <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-black overflow-hidden">
         <img src={img1} alt="Bandera 1" className="w-full h-full object-cover" />
     </div>
@@ -29,7 +38,8 @@ const deleteDivisa: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) =>
     <div className="flex justify-center items-center ml-0">
     <h1 className="text-sm">{divisaName}</h1>
     </div>  
-    <button className='ml-0' onClick={handleClick}>
+    </button>
+    <button className='ml-0 hover:text-red-500 hover:scale-110 transition-transform duration-300' onClick={handleClick} >
       <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 18 18"
@@ -47,6 +57,7 @@ const deleteDivisa: React.FC<DivisaDataProps> = ({id, divisaName ,img1,img2}) =>
  <div className='w-full border-b border-black'>
 
  </div>
+
  </div>
   );
 };

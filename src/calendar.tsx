@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useGlobalContext } from './globalProvider';
+
 const CustomDropdown = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const { setGlobalDates } = useGlobalContext();
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref para el menú desplegable
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -21,13 +24,14 @@ const CustomDropdown = () => {
     }
     setShowMenu(false);
   };
-  const formatDateSend = (date:Date) => {
+
+  const formatDateSend = (date: Date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Sumar 1 al mes ya que los meses van de 0 a 11
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-  
+
   const formatDate = (date: Date): string => {
     const options: Intl.DateTimeFormatOptions = {
       day: '2-digit',
@@ -46,7 +50,7 @@ const CustomDropdown = () => {
 
   const getEndOfYearDate = (): Date => {
     const today = new Date();
-    const endOfYear = new Date(today.getFullYear(), today.getMonth(),today.getDay()+6); 
+    const endOfYear = new Date(today.getFullYear(), today.getMonth(), today.getDay() + 6);
     return endOfYear;
   };
 
@@ -55,13 +59,26 @@ const CustomDropdown = () => {
       setStartDate(getOneYearAgoDate());
       setEndDate(getEndOfYearDate());
     }
-  }, []); 
+
+    // Agregar el manejador de eventos para cerrar el menú cuando se hace clic fuera de él
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [startDate, endDate]);
+
+  // Función para cerrar el menú cuando se hace clic fuera de él
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setShowMenu(false);
+    }
+  };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* Contenedor del botón */}
       <div
-        className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer"
+        className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:scale-105 transition-transform duration-300"
         onClick={toggleMenu}
         tabIndex={0}
         role="button"
@@ -111,7 +128,7 @@ const CustomDropdown = () => {
 
             {/* Botón de confirmación */}
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400"
+              className="bg-black text-white px-4 py-2 rounded-md hover:bg-slate-800 focus:outline-none focus:ring focus:ring-blue-400"
               onClick={handleConfirm}
             >
               Confirmar

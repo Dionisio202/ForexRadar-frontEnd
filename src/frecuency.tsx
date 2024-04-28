@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useGlobalContext } from './globalProvider';
 
 const Frecuency = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('Diario');
+  const { setFrequency } = useGlobalContext();
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref para el menú desplegable
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -13,20 +16,45 @@ const Frecuency = () => {
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
     setShowMenu(false); // Cerrar el menú después de seleccionar una opción
+    // Actualizar la frecuencia en el contexto global
+    let valor = option;
+    if(option === 'Diario'){
+      valor = 'D';
+    }else if(option === 'Mensual'){
+      valor = 'M';
+    }else if(option === 'Semanal'){
+      valor = 'W';
+    }
     console.log('Opción seleccionada:', option);
+    setFrequency(valor);
+  };
+
+  useEffect(() => {
+    // Agregar el manejador de eventos para cerrar el menú cuando se hace clic fuera de él
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Función para cerrar el menú cuando se hace clic fuera de él
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setShowMenu(false);
+    }
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* Contenedor del botón */}
       <div
-        className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer"
+        className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:scale-105 transition-transform duration-300"
         onClick={toggleMenu}
         tabIndex={0}
         role="button"
         aria-label=""
       >
-        <span className='text-white text-xl'>Frecuencia : { selectedOption}</span>
+        <span className='text-white text-xl '>Frecuencia : { selectedOption}</span>
         {/* Icono desplegable */}
         <svg
           className="w-4 h-4 text-white fill-current"
@@ -43,7 +71,7 @@ const Frecuency = () => {
 
       {/* Menú desplegable */}
       {showMenu && (
-        <div className="absolute top-full left-0 mt-2 w-15 bg-white border border-gray-200 shadow-lg rounded-lg z-10 text-black">
+        <div className="absolute top-full left-0 mt-2 ml-12 w-15 bg-white border border-gray-200 shadow-lg rounded-lg z-10 text-black">
           {/* Contenido del menú */}
           <div className="p-2">
             {/* Renderizar opciones del menú */}

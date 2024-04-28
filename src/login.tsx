@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { login } from './methods';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalContext } from './globalProvider';
 const LoginForm: React.FunctionComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const { setIsLogin} = useGlobalContext(); 
   const handleLogin = async () => {
-  login(email,password,setError ,navigate);
+  login(email,password,setError,setIsLogin);
   };
 
   return (
