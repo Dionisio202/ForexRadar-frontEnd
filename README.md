@@ -67,28 +67,28 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
     <td width="25%" align="center">
 
     ### 👤 **Add Symbol**  
-    <img src="public/images/track4.png" width="100%" />
+    <img src="./public/images/track4.png" width="100%" />
 
     </td>
 
     <td width="25%" align="center">
 
     ### 🏠 **Candlestick Chart**  
-    <img src="public/images/track5.png" width="100%" />
+    <img src="./public/images/track5.png" width="100%" />
 
     </td>
 
     <td width="25%" align="center">
 
     ### 🔐 **Login Interface**  
-    <img src="public/images/track.png" width="100%" />
+    <img src="./public/images/track.png" width="100%" />
 
     </td>
 
     <td width="25%" align="center">
 
     ### ➕ **Profile Management**  
-    <img src="public/images/track3.png" width="100%" />
+    <img src="./public/images/track3.png" width="100%" />
 
     </td>
   </tr>
