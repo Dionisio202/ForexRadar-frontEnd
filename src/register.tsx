@@ -38,19 +38,22 @@ const RegisterForm: React.FunctionComponent = () => {
   };
 
   const handleRegister = async () => {
-    // Validar la contraseña
+ 
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
-    // Validar el correo electrónico
+ 
     if (!validateEmail(email)) {
       setError('Ingrese un correo electrónico válido.');
       return;
     }
+    if (confirmPassword !== password) {
+      setError('Las contraseñas no son parecidas ');
+      return;
+    }
 
-    // Realizar el registro si todas las validaciones pasan
     setIsFormValid(true);
     register(email, password, setError, name, lastName, confirmPassword, setIsFormValid, toggleLogin);
   };

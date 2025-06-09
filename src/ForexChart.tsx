@@ -66,6 +66,19 @@ class ApexChart extends React.Component<Props, State> {
             enabled: true,
           },
         },
+        annotations: {
+          xaxis: [
+            {
+              x: new Date('2024-04-28').getTime(), // Posición en el eje x
+              borderColor: '#ff0000', // Color del borde de la línea
+              label: {
+                text: 'Fecha actual', // Texto de la etiqueta
+                position: 'top', // Posición de la etiqueta
+              },
+            },
+          ],
+        },
+        panEnabled: true,
       },
     };
   }

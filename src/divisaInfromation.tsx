@@ -39,7 +39,7 @@ const DivisaInformation = () => {
   const { profile} = useGlobalContext(); 
   const { setProfile} = useGlobalContext(); 
   const { isSipnner} = useGlobalContext(); 
-
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,17 +62,20 @@ const DivisaInformation = () => {
       const isDuplicate = previousValuesArray.some(item => item.timestamp === previousValue.timestamp);
       
       if (!isDuplicate) {
+        setNotificationCount(prevCount => prevCount + 1);
+
         setPreviousValuesArray(prevArray => [...prevArray, previousValue]);
+
         if (previousValuesArray.length > 1) {
-          const previousValueIndex = previousValuesArray.length - 2;
+          const previousValueIndex = previousValuesArray.length - 1;
           const previousValue = previousValuesArray[previousValueIndex];
           if(previousValue.divisa == previousValuesArray[previousValuesArray.length - 1].divisa){
           if (previousValue.valor > previousValuesArray[previousValuesArray.length - 1].valor) {
-            alert('El valor actual es menor que el valor anterior');
+            // alert('El valor actual es mayor que el valor anterior');
           } else if(previousValue.valor < previousValuesArray[previousValuesArray.length - 1].valor) {
-            alert('El valor actual es mayor que el valor anterior');
+            // alert('El valor actual es menor que el valor anterior');
           }else if(previousValue.valor ==previousValuesArray[previousValuesArray.length - 1].valor){
-            alert('El valor actual es igual al valor anterior');
+            // alert('El valor actual es igual al valor anterior');
             console.log(previousValue.valor ,previousValue.divisa,previousValue.timestamp,previousValue.cambio,previousValue.cambioPorcentaje,previousValue.color);
             console.log(previousValuesArray[previousValuesArray.length - 1].valor,previousValuesArray[previousValuesArray.length - 1].divisa,previousValuesArray[previousValuesArray.length - 1].timestamp,previousValuesArray[previousValuesArray.length - 1].cambio,previousValuesArray[previousValuesArray.length - 1].cambioPorcentaje,previousValuesArray[previousValuesArray.length - 1].color);
           }
@@ -211,9 +214,15 @@ const DivisaInformation = () => {
             </svg>
           </button>
 
-          <button onClick={toggleContainerAlarm} className=' hover:scale-125 transition-transform duration-300'>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44" height="44"><path fill="currentColor" d="M22.5 11a2.5 2.5 0 0 0-2.48 2.14.5.5 0 0 1-.3.4C16.97 14.63 15 17.2 15 20V27h15V20c0-2.8-1.98-5.37-4.71-6.46a.5.5 0 0 1-.31-.4A2.5 2.5 0 0 0 22.5 11ZM31 27a2 2 0 1 1 0 4h-5.04c-.26 1.57-1.7 3-3.46 3a3.62 3.62 0 0 1-3.46-3H14a2 2 0 1 1 0-4V20c0-3.18 2.16-6.01 5.09-7.28a3.5 3.5 0 0 1 6.82 0C28.84 13.99 31 16.82 31 20V27Zm-10.94 4c.25 1.06 1.26 2 2.44 2s2.19-.94 2.44-2h-4.88ZM14 28a1 1 0 1 0 0 2h17a1 1 0 1 0 0-2H14Z"></path></svg>
-          </button>
+          <button onClick={toggleContainerAlarm} className='hover:scale-125 transition-transform duration-300 relative'>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44" height="44">
+    <path fill="currentColor" d="M22.5 11a2.5 2.5 0 0 0-2.48 2.14.5.5 0 0 1-.3.4C16.97 14.63 15 17.2 15 20V27h15V20c0-2.8-1.98-5.37-4.71-6.46a.5.5 0 0 1-.31-.4A2.5 2.5 0 0 0 22.5 11ZM31 27a2 2 0 1 1 0 4h-5.04c-.26 1.57-1.7 3-3.46 3a3.62 3.62 0 0 1-3.46-3H14a2 2 0 1 1 0-4V20c0-3.18 2.16-6.01 5.09-7.28a3.5 3.5 0 0 1 6.82 0C28.84 13.99 31 16.82 31 20V27Zm-10.94 4c.25 1.06 1.26 2 2.44 2s2.19-.94 2.44-2h-4.88ZM14 28a1 1 0 1 0 0 2h17a1 1 0 1 0 0-2H14Z"></path>
+  </svg>
+  {notificationCount > 0 && (
+    <span className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full">{notificationCount}</span>
+  )}
+</button>
+
         </div>
       </div>
 

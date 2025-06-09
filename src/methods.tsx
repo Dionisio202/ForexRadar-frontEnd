@@ -35,14 +35,10 @@ export const register = async (
 
     const response = await axios.post(url);
 
-    if (response.status === 200) {
-      // Registro exitoso
-      console.log('Registro exitoso:', response.data);
+    if (response.status === 200) {      console.log('Registro exitoso:', response.data);
       toggleLogin();
       setIsFormValid(false);
-      // Puedes redirigir al usuario a otra página o mostrar un mensaje de éxito aquí
     } else if (response.status === 429) {
-      // Manejar otros códigos de estado aquí si es necesario
       setError('Limite de registros exedidos, por favor intenta mas tarde.');
     }
   } catch (error: any) {
@@ -60,77 +56,79 @@ export const register = async (
 };
 
 
-  export const login= async (email:String,password:string,setError:any,setIsLogin:any) => {
-    if (!email || !password ) {
-        alert('Todos los campos son obligatorios.');
-        return;
-      }    
- 
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/user/login/', {
-        email: email,
-        password: password,
-      });
+export const login = async (email: string, password: string, setError: any, setIsLogin: any) => {
+  if (!email || !password) {
+    alert('Todos los campos son obligatorios.');
+    return;
+  }
 
-      if (response.status === 200) {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/user/login/', {
+      email: email,
+      password: password,
+    });
 
-        const userId = response.data.token.id;
-        const email = response.data.token.email;
-     
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
-        // Registro exitoso, puedes redirigir al usuario a otra página o mostrar un mensaje de éxito
-        setError('Ingreso exitoso ');
-        //navigate('/home');
-        setIsLogin(true);
-      } 
-    } catch (error: any) {
-      const axiosError = error as AxiosError<{ error: { msg: string } }>;
-      if (axiosError.response && axiosError.response.data) {
-        if((axiosError.response.data.error).toString() === 'invalid_grant'){
-          setError("La contraseña o coreo electronico son incorrectos");
+    if (response.status === 200) {
+      const userId = response.data.user_id;  // <-- ahora sí correcto
+      const email = response.data.email;     // <-- ahora sí correcto
+      const token = response.data.token;     // <-- si quieres guardar el token también
+      console.log('Ingreso exitoso:', response.data);
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('email', email);
+      localStorage.setItem('password', password); // opcional
+      localStorage.setItem('token', token); // opcional
 
-        }
- 
-      }else{
-        setError('Error al iniciar sesion, por favor inténtalo de nuevo.');
-        
-      } 
+      setError('Ingreso exitoso');
+      setIsLogin(true);
     }
-  };
+  } catch (error: any) {
+    const axiosError = error as AxiosError<{ error: { msg: string } }>;
+    if (axiosError.response && axiosError.response.data) {
+      if ((axiosError.response.data.error).toString() === 'invalid_grant') {
+        setError('La contraseña o correo electrónico son incorrectos');
+      } else {
+        setError(axiosError.response.data.error.toString());
+      }
+    } else {
+      setError('Error al iniciar sesión, por favor inténtalo de nuevo.');
+    }
+  }
+};
+
 
   /////getProfile/////////////////////
-  export const getProfile = async (id:string,setProfile:any) => {
-    if (!id ) {
-      return;
-    }
-  
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/user/getProfile/', {
-        id: id,
-      });
-     
-      if (response.status === 200) {
-        const profileData = {
-          email: localStorage.getItem('email') ?? '',
-          firstName: response.data[0].name,
-          lastName: response.data[0].last_name,
-          password: ''
-        };
-        setProfile(profileData);
-        console.log("perfil obtenido")
-      }
-    } catch (error: any) {
-      const axiosError = error as AxiosError<{ error: { msg: string } }>;
-      if (axiosError.response && axiosError.response.data) {
-        console.error('Error al obtener perfil:', axiosError.response.data);
+  export const getProfile = async (id: string | undefined, setProfile: any) => {
+  if (!id || isNaN(Number(id))) {
+    console.error('ID inválido para getProfile:', id);
+    return;
+  }
 
-    }else{
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/user/getProfile/', {
+      id: Number(id),
+    });
+
+    if (response.status === 200) {
+      const profileData = {
+        email: localStorage.getItem('email') ?? '',
+        firstName: response.data.first_name,
+        lastName: response.data.last_name,
+        password: ''
+      };
+      setProfile(profileData);
+      console.log('Perfil obtenido');
+      console.log('Perfil:', response.data);
+    }
+  } catch (error: any) {
+    const axiosError = error as AxiosError<{ error: { msg: string } }>;
+    if (axiosError.response && axiosError.response.data) {
+      console.error('Error al obtener perfil:', axiosError.response.data);
+    } else {
       console.error('Error al obtener perfil:', axiosError.message);
-      console.log('error '+error)
-    }}
-  };
+      console.log('error', error);
+    }
+  }
+};
 
   /////////updateProfile/////////////////////
   export const UpdateProfile = async (newName:string,profileId:string,setProfile:any) => {
@@ -211,6 +209,7 @@ export const register = async (
       if (response.status === 200) {
         // Obtener los datos de la respuesta
         const divisas: Divisa[] = response.data;
+        console.log('Datos de divisas obtenidos:', response.data);
         return divisas;
       } else {
         // La solicitud falló con un código de estado no esperado
@@ -246,6 +245,7 @@ export const register = async (
         // Error de la API
         //console.error('Error de la API:', error.response.data);
         alert('Divisa ya insertada porfavor seleccione otra');
+        setIsSpinner(true)
       } 
     }
     
@@ -261,6 +261,7 @@ export const register = async (
       if (response.status === 200) {
         // Obtener los datos de la respuesta
         const divisas: Divisa[] = response.data;
+        console.log('Datos de divisas obtenidos elimi:', response.data);
         return divisas;
       } else {
         // La solicitud falló con un código de estado no esperado
