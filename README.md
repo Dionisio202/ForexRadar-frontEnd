@@ -54,42 +54,44 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 ## 🖼️ Screenshots
 
 <table>
-<tr>
+  <tr>
+    <td colspan="4" align="center">
 
-<td width="100%">
+    ### 📋 **HOME**  
+    <img src="public/images/track2.png" width="80%" />
 
-### 📋 **HOME**
-![Home](public/images/track2.png)
+    </td>
+  </tr>
 
-</td>
+  <tr>
+    <td width="25%" align="center">
 
-</tr>
-<tr>
-<td width="100%">
+    ### 👤 **Add Symbol**  
+    <img src="public/images/track4.png" width="100%" />
 
-### 👤 **Add Symbol**
-![Add Symbol](public/images/track4.png)
+    </td>
 
-</td>
-<td width="100%">
+    <td width="25%" align="center">
 
-### 🏠 **Candlestick Chart**
-![Candlestick Chart](public/images/track5.png)
+    ### 🏠 **Candlestick Chart**  
+    <img src="public/images/track5.png" width="100%" />
 
-</td>
-<td width="100%">
+    </td>
 
-### 🔐 **Login Interface**
-![Login](public/images/track.png)
+    <td width="25%" align="center">
 
-</td>
-<td width="100%">
+    ### 🔐 **Login Interface**  
+    <img src="public/images/track.png" width="100%" />
 
-### ➕ **Profile Managment**
-![Profile Managment](public/images/track3.png)
+    </td>
 
-</td>
-</tr>
+    <td width="25%" align="center">
+
+    ### ➕ **Profile Management**  
+    <img src="public/images/track3.png" width="100%" />
+
+    </td>
+  </tr>
 </table>
 
 ---
