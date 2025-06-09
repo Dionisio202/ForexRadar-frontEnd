@@ -53,15 +53,12 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 
 ## 🖼️ Screenshots
 
+### 📋 **HOME**
+![Home](public/images/track2.png)
 <table>
 <tr>
 
-<td width="100%">
-
-### 📋 **HOME**
-![Home](public/images/track2.png)
-
-</td>
+<
 
 </tr>
 <tr>
