@@ -56,15 +56,15 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 <table>
 <tr>
 
-<td width="33%">
+<td width="70%">
 
-### 📋 **Watchlist**
+### 📋 **HOME**
 ![Home](public/images/track2.png)
 
 </td>
 <td width="33%">
 
-### ➕ **Add Symbol Modal**
+### ➕ **Profile Managment**
 ![Add Symbol](public/images/track3.png)
 
 </td>
