@@ -55,25 +55,15 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 
 ### 📋 **HOME**
 ![Home](public/images/track2.png)
-<table>
-<tr>
-
-<
-
-</tr>
-<tr>
-<td width="100%">
 
 ### 👤 **Add Symbol**
 ![Add Symbol](public/images/track4.png)
-
-</td>
-<td width="100%">
-
 ### 🏠 **Candlestick Chart**
 ![Candlestick Chart](public/images/track5.png)
 
-</td>
+
+<table>
+<tr>
 <td width="33%">
 
 ### 🔐 **Login Interface**
