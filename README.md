@@ -9,8 +9,7 @@
 ![ApexCharts](https://img.shields.io/badge/ApexCharts-3.44-FF6B35?style=for-the-badge&logo=apexcharts&logoColor=white)
 
 **Modern React application for real-time Forex data visualization and trading analysis**
-
-[🚀 Live Demo](#-screenshots) • [📖 Documentation](#-key-features) • [⚡ Quick Start](#️-quick-installation) • [🔗 Backend API](https://github.com/Dionisio202/ForexRadar-backend)
+[📖 Documentation](#-key-features) • [⚡ Quick Start](#️-quick-installation) • [🔗 Backend API](https://github.com/Dionisio202/ForexRadar-backend)
 
 </div>
 
