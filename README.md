@@ -55,16 +55,11 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 
 <table>
 <tr>
-<td width="33%">
 
-### 📊 **Candlestick Chart**
-![Candlestick Chart](public/images/track.png)
-
-</td>
 <td width="33%">
 
 ### 📋 **Watchlist**
-![Watchlist](public/images/track2.png)
+![Home](public/images/track2.png)
 
 </td>
 <td width="33%">
@@ -84,13 +79,13 @@ This frontend seamlessly integrates with the [ForexRadar Backend](https://github
 <td width="33%">
 
 ### 🏠 **Dashboard View**
-![Dashboard](public/images/track5.png)
+![Candlestick Chart](public/images/track5.png)
 
 </td>
 <td width="33%">
 
 ### 🔐 **Login Interface**
-![Login](public/images/track6.png)
+![Login](public/images/track.png)
 
 </td>
 </tr>
